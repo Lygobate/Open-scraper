@@ -1,6 +1,6 @@
 # Open-Scraper
 
-A free, secure, and improved fork of the popular "Instant Data Scraper" extension.
+A free, secure, and improved fork of the popular **"Instant Data Scraper"** extension.
 
 ## ⚠️ Context: Why this project?
 
