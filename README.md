@@ -1,43 +1,43 @@
 # Open-Scraper
 
-Un fork libre, sécurisé et amélioré de la célèbre extension "Instant Data Scraper".
+A free, secure, and improved fork of the popular "Instant Data Scraper" extension.
 
-## ⚠️ Contexte : Pourquoi ce projet ?
+## ⚠️ Context: Why this project?
 
-Avis à tous les enquêteurs et passionnés d’OSINT.
+Attention all OSINT investigators and enthusiasts.
 
-L’extension Chrome très populaire **Instant Data Scraper** vient de changer de mains (passant de *Web Robots* à une entité nommée *Flavr Technology, LP*). Selon Micah Hoffman (@WebBreacher), référence incontournable de la communauté, ce changement de propriétaire rend l’outil « plus du tout sûr » à utiliser.
+The highly popular Chrome extension **Instant Data Scraper** recently changed hands (moving from *Web Robots* to an entity named *Flavr Technology, LP*). According to Micah Hoffman (@WebBreacher), a key figure in the community, this change in ownership makes the tool "no longer safe" to use.
 
-🚩 **Pourquoi s’inquiéter ?**
-- **Changement de propriétaire opaque** : Les extensions rachetées par des tiers sont souvent transformées en vecteurs de collecte de données publicitaires, voire en malwares/spywares.
-- **Risque de confidentialité** : En tant qu’outil de scraping, l’extension a accès au contenu des pages que vous visitez. Vos recherches sensibles pourraient être compromises.
-- **Avis d’OSINT-FR** : L’alerte venant de Micah Hoffman est prise très au sérieux par la communauté OSINT mondiale.
+🚩 **Why you should be concerned:**
+- **Opaque change of ownership**: Extensions acquired by third parties are often turned into vectors for advertising data collection, or even malware/spyware.
+- **Privacy risk**: As a scraping tool, the extension has access to the content of the pages you visit. Your sensitive research could be compromised.
+- **OSINT-FR Warning**: The alert coming from Micah Hoffman is taken very seriously by the global OSINT community.
 
-🔨 **Que faire ?**
-1. **DÉSINSTALLEZ** l’extension originale immédiatement de votre navigateur.
-2. **VÉRIFIEZ** vos autres extensions : la pratique du rachat d’outils gratuits pour y injecter du code malveillant est courante.
+🔨 **What should you do?**
+1. **UNINSTALL** the original extension from your browser immediately.
+2. **CHECK** your other extensions: the practice of buying free tools to inject malicious code is common.
 
-## 🚀 Le Projet : Ce que nous avons mis en place
+## 🚀 The Project: What we implemented
 
-Face à ce risque pour la sécurité, **Open-Scraper** a été créé en repartant de la base de la version 1.4.1 de l'extension originale, avant son rachat. Nous avons assaini et amélioré le code :
+Faced with this security risk, **Open-Scraper** was created starting from the base of version 1.4.1 of the original extension, before its acquisition. We have sanitized and improved the code:
 
-- **Sécurité et Transparence** : Code entièrement ouvert et auditable, garantissant l'absence de collecte de données en arrière-plan.
-- **Refactoring** : Nettoyage complet du code source (anciennement très obfusqué) pour le rendre lisible, documenté (JSDoc) et facile à maintenir. Suppression du code mort (stubs).
-- **Améliorations de l'Interface (UI/UX)** :
-  - Limitation de la largeur maximale des colonnes (200px) pour éviter les tableaux de résultats illisibles (notamment avec de longues URLs).
-  - Ajout d'une troncature intelligente du texte (`text-overflow: ellipsis`).
-- **Correction de bugs** : Résolution de problèmes critiques liés à la détection automatique des tableaux.
+- **Security and Transparency**: Fully open-source and auditable code, ensuring no background data collection or communication with shady third-party servers.
+- **Refactoring**: Complete cleanup of the source code (formerly heavily obfuscated) to make it readable, documented (JSDoc), and easy to maintain. Removed dead code (stubs).
+- **UI/UX Improvements**:
+  - Max column width limit (200px) to prevent unreadable results tables (especially with long URLs).
+  - Smart text truncation (`text-overflow: ellipsis`).
+- **Bug Fixes**: Resolved critical issues related to automatic table detection.
 
-## ⚙️ Setup : Comment installer l'extension
+## ⚙️ Setup: How to install the extension
 
-Pour utiliser cette version sécurisée, vous devez l'installer manuellement ("sideloading") sur votre navigateur :
+To use this secure version, you must manually install ("sideload") it onto your browser:
 
-1. **Récupérez le code** :
-   - Clonez ce dépôt sur votre machine : `git clone https://github.com/Lygobate/Open-scraper.git`
-   - *Ou* téléchargez le code sous forme d'archive ZIP (via le bouton vert "Code" > "Download ZIP" sur GitHub) et décompressez-le.
-2. **Ouvrez Chrome** (ou un navigateur basé sur Chromium comme Brave, Edge) et allez à l'adresse : `chrome://extensions/`
-3. Activez le **"Mode développeur"** (bouton en haut à droite).
-4. Cliquez sur le bouton **"Charger l'extension non empaquetée"** (en haut à gauche).
-5. Sélectionnez le dossier extrait qui contient le fichier `manifest.json`.
+1. **Get the code**:
+   - Clone this repository to your machine: `git clone https://github.com/Lygobate/Open-scraper.git`
+   - *Or* download the code as a ZIP archive (via the green "Code" button > "Download ZIP" on GitHub) and extract it.
+2. **Open Chrome** (or a Chromium-based browser like Brave, Edge) and go to: `chrome://extensions/`
+3. Enable **"Developer mode"** (toggle in the top right corner).
+4. Click on the **"Load unpacked"** button (top left).
+5. Select the extracted folder that contains the `manifest.json` file.
 
-L'extension Open-Scraper apparaîtra dans votre liste et sera immédiatement fonctionnelle en toute sécurité !
+The Open-Scraper extension will appear in your list and will be immediately functional and secure to use!
