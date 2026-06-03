@@ -3,23 +3,23 @@
 
     const chromeInstance = chrome;
 
-    // Clés utilisées pour stocker les configurations locales de table
+    // Keys used to store local table configurations
     const STORAGE_KEYS = {
         TABLES: "tableConfigurations"
     };
 
     /**
-     * Helper asynchrone pour lire dans le stockage local de l'extension.
-     * @param {string[]} keys - Liste des clés à récupérer.
-     * @returns {Promise<Object>} Promesse contenant les valeurs lues.
+     * Asynchronous helper to read from the extension's local storage.
+     * @param {string[]} keys - List of keys to retrieve.
+     * @returns {Promise<Object>} Promise containing the read values.
      */
     const getLocalStorage = async (keys) => chromeInstance.storage.local.get(keys);
 
     /**
-     * Filtre les configurations de table applicables à une URL selon le scope configuré (chemin d'accès).
-     * @param {Array} configs - Configurations à filtrer.
-     * @param {string} url - URL de la page web actuelle.
-     * @returns {Array} Liste filtrée des configurations applicables.
+     * Filters table configurations applicable to a URL based on the configured scope (path).
+     * @param {Array} configs - Configurations to filter.
+     * @param {string} url - URL of the current web page.
+     * @returns {Array} Filtered list of applicable configurations.
      */
     function filterConfigsByScope(configs, url) {
         if (!configs?.length) return configs ?? [];
@@ -53,9 +53,9 @@
     }
 
     /**
-     * Met à jour le menu déroulant des configurations enregistrées pour le site dans le popup.
-     * @param {Array} configs - Configurations de table applicables.
-     * @param {number} [selectedConfigIndex] - Index de la configuration sélectionnée par défaut.
+     * Updates the dropdown menu of saved configurations for the site in the popup.
+     * @param {Array} configs - Applicable table configurations.
+     * @param {number} [selectedConfigIndex] - Default selected configuration index.
      */
     function updateConfigDropdown(configs, selectedConfigIndex) {
         const $savedConfigSection = $("#savedConfigSection");
@@ -107,8 +107,8 @@
     }
 
     /**
-     * Récupère la liste des configurations sauvegardées pour le domaine de l'onglet actif.
-     * @returns {Promise<Array>} Liste des configurations valides pour la page courante.
+     * Retrieves the list of saved configurations for the active tab's domain.
+     * @returns {Promise<Array>} List of valid configurations for the current page.
      */
     async function getConfigsForCurrentTab() {
         const tab = await chromeInstance.tabs.get(currentTab.id).catch(() => null);
@@ -135,15 +135,15 @@
     }
 
     /**
-     * Charge les configurations applicables pour l'onglet courant.
-     * @returns {Promise<Array>} Liste des configurations applicables.
+     * Loads applicable configurations for the current tab.
+     * @returns {Promise<Array>} List of applicable configurations.
      */
     async function loadConfigs() {
         return getConfigsForCurrentTab();
     }
 
     /**
-     * Applique la configuration sélectionnée dans le menu déroulant à la page en cours d'extraction.
+     * Applies the configuration selected in the dropdown menu to the page currently being extracted.
      */
     function applySelectedConfig() {
         const $savedConfigSelect = $("#savedConfigSelect");
@@ -173,10 +173,10 @@
     }
 
     /**
-     * Convertit une valeur de date JS en numéro de série de date Excel.
-     * @param {string} dateStr - Date sous forme de texte.
-     * @param {boolean} is1904 - Utiliser le système de date Excel 1904.
-     * @returns {number} Numéro sérialisé représentant la date dans Excel.
+     * Converts a JS date value to an Excel date serial number.
+     * @param {string} dateStr - Date as text.
+     * @param {boolean} is1904 - Use Excel 1904 date system.
+     * @returns {number} Serial number representing the date in Excel.
      */
     function dateToExcelSerial(dateStr, is1904) {
         let serialDate = Date.parse(dateStr);
@@ -187,10 +187,10 @@
     }
 
     /**
-     * Génère un fichier binaire XLSX à partir de la structure de table d'Open Scraper.
-     * @param {Object} extractedData - Données extraites avec les en-têtes (fields) et les lignes (data).
-     * @param {string} sheetName - Nom de la feuille de calcul Excel.
-     * @returns {string} Fichier XLSX binaire encodé sous forme de chaîne de caractères.
+     * Generates a binary XLSX file from the Open Scraper table structure.
+     * @param {Object} extractedData - Extracted data with headers (fields) and rows (data).
+     * @param {string} sheetName - Name of the Excel worksheet.
+     * @returns {string} Binary XLSX file encoded as a string.
      */
     function generateXlsxBinary(extractedData, sheetName) {
         extractedData.data.unshift(extractedData.fields);
@@ -250,8 +250,8 @@
     }
 
     /**
-     * Exécute de manière sécurisée une fonction en capturant les exceptions.
-     * @param {Function} fn - Fonction à exécuter.
+     * Safely executes a function by catching exceptions.
+     * @param {Function} fn - Function to execute.
      */
     function safeExecute(fn) {
         try {
@@ -261,23 +261,23 @@
         }
     }
 
-    // --- Variables d'État Globales ---
+    // --- Global State Variables ---
 
-    // Données d'onglet actif extraites de l'URL du popup
+    // Active tab data extracted from the popup URL
     const currentTab = {
         id: parseInt(getQueryParam("tabid")),
         url: getQueryParam("url")
     };
 
-    // État actuel du scraping et de la configuration active
+    // Current scraping state and active configuration
     const scrapingState = {};
     const PREVIEW_LIMIT = 1000;
     const robotsTxtRules = null;
 
     /**
-     * Analyse l'URL de recherche GET du popup pour extraire la valeur d'un paramètre.
-     * @param {string} paramName - Nom du paramètre.
-     * @returns {string} Valeur décodée du paramètre.
+     * Parses the popup's GET search URL to extract a parameter value.
+     * @param {string} paramName - Parameter name.
+     * @returns {string} Decoded parameter value.
      */
     function getQueryParam(paramName) {
         const paramsArray = window.location.search.substring(1).split("&");
@@ -290,10 +290,10 @@
     }
 
     /**
-     * Met à jour le texte d'un conteneur d'informations de statut dans le popup.
-     * @param {string} message - Message d'information ou d'erreur.
-     * @param {string} elementId - ID DOM du conteneur.
-     * @param {boolean} [isStopAction=false] - Indique s'il faut arrêter le scraping.
+     * Updates the text of a status info container in the popup.
+     * @param {string} message - Information or error message.
+     * @param {string} elementId - Container DOM ID.
+     * @param {boolean} [isStopAction=false] - Indicates whether to stop scraping.
      */
     function showStatusMessage(message, elementId, isStopAction) {
         if (message === "") {
@@ -306,10 +306,10 @@
     }
 
     /**
-     * Analyse les données d'objets brutes pour générer une structure tabulaire propre
-     * en choisissant les chemins d'accès aux propriétés de colonnes les plus optimaux.
-     * @param {Array<Object>} rawData - Lignes d'objets brutes lues dans la page cible.
-     * @returns {Object} Objet contenant la liste finale des colonnes (fields) et la matrice de données (data).
+     * Analyzes raw object data to generate a clean tabular structure
+     * by choosing the most optimal paths for column properties.
+     * @param {Array<Object>} rawData - Raw object rows read from the target page.
+     * @returns {Object} Object containing the final list of columns (fields) and the data matrix (data).
      */
     function findOptimalDataFields(rawData) {
         const rowCount = rawData.length;
@@ -330,7 +330,7 @@
             return selectorLengthsCache[selector];
         }
 
-        // Compter l'occurrence de chaque champ dans les objets bruts
+        // Count the occurrence of each field in the raw objects
         rawData.forEach(function(row) {
             for (const key in row) {
                 if (!(key in fieldCounts)) fieldCounts[key] = 0;
@@ -338,7 +338,7 @@
             }
         });
 
-        // Déterminer les en-têtes nettoyés et uniques
+        // Determine clean and unique headers
         Object.keys(fieldCounts)
             .map(function(key) {
                 return [fieldCounts[key], key];
@@ -430,20 +430,20 @@
                 valuesArray.push(cellVal);
             });
 
-            // Éliminer les colonnes qui ont une valeur constante unique pour toute la table
+            // Eliminate columns that have a single constant value for the whole table
             const distinctValues = Object.keys(duplicateValuesMap);
             if (distinctValues.length && duplicateValuesMap[distinctValues[0]] === rowCount) {
                 return false;
             }
 
-            // Éliminer les colonnes redondantes (qui contiennent exactement le même motif de valeurs)
+            // Eliminate redundant columns (containing exactly the same value pattern)
             const cacheKey = JSON.stringify(valuesArray);
             if (cacheKey in seenValuesCache) {
                 return false;
             }
             seenValuesCache[cacheKey] = 1;
 
-            // Éliminer les colonnes vides ou à très faible taux de remplissage (< 20%)
+            // Eliminate empty columns or those with very low fill rate (< 20%)
             if (fieldMatchRates[field] < 0.2 * rowCount) {
                 return false;
             }
@@ -471,9 +471,9 @@
     }
 
     /**
-     * Renomme les champs d'en-tête selon les modifications personnalisées de l'utilisateur.
-     * @param {string[]} fields - Noms originaux des champs.
-     * @returns {string[]} Liste des noms après renommage.
+     * Renames header fields according to user custom modifications.
+     * @param {string[]} fields - Original field names.
+     * @returns {string[]} List of names after renaming.
      */
     function applyHeaderRenames(fields) {
         return fields.map(function(field) {
@@ -482,9 +482,9 @@
     }
 
     /**
-     * Structure les données brutes sous forme tabulaire propre prête à l'export.
-     * @param {Array<Object>} rawData - Lignes brutes extraites.
-     * @returns {Object} Données formatées avec les en-têtes remappés.
+     * Structures raw data into a clean tabular form ready for export.
+     * @param {Array<Object>} rawData - Extracted raw rows.
+     * @returns {Object} Formatted data with remapped headers.
      */
     function prepareDataForExport(rawData) {
         const optimalData = findOptimalDataFields(rawData);
@@ -493,9 +493,9 @@
     }
 
     /**
-     * Convertit une chaîne de caractères binaire brute en un buffer ArrayBuffer de bytes.
-     * @param {string} binaryStr - Chaîne binaire.
-     * @returns {ArrayBuffer} Le buffer de données.
+     * Converts a raw binary string to a byte ArrayBuffer.
+     * @param {string} binaryStr - Binary string.
+     * @returns {ArrayBuffer} The data buffer.
      */
     function stringToArrayBuffer(binaryStr) {
         const buffer = new ArrayBuffer(binaryStr.length);
@@ -507,7 +507,7 @@
     }
 
     /**
-     * Analyse les configurations d'en-têtes et crée des règles de sélecteurs pour les colonnes de la table active.
+     * Analyzes header configurations and creates selector rules for the active table's columns.
      */
     function analyzeAndSaveTableSelector() {
         (() => {
@@ -604,7 +604,7 @@
     }
 
     /**
-     * Rendu de la grille de données interactive en utilisant la bibliothèque Handsontable.
+     * Renders the interactive data grid using the Handsontable library.
      */
     function renderHandsontable() {
         const previewData = findOptimalDataFields(scrapingState.data);
@@ -664,7 +664,7 @@
 
                     $headerContainer.append($headerInput);
 
-                    // Bouton de suppression de colonne
+                    // Column deletion button
                     $headerContainer.append(
                         $("<span>", {
                             class: "glyphicon glyphicon-remove remove-column",
@@ -695,14 +695,14 @@
     }
 
     /**
-     * Sauvegarde la configuration active de la table courante dans le stockage local de l'extension.
+     * Saves the current table's active configuration to the extension's local storage.
      */
     function saveCurrentConfig() {
         localStorage.setItem(scrapingState.configName, JSON.stringify(scrapingState.config));
     }
 
     /**
-     * Affiche un message d'erreur si l'extraction n'est pas supportée sur ce site.
+     * Displays an error message if extraction is not supported on this site.
      */
     function handleUnsupportedSite() {
         $("#waitHeader").hide();
@@ -714,18 +714,18 @@
     }
 
     /**
-     * Récupère le sélecteur du bouton "Suivant" pré-enregistré pour cet hôte.
-     * @returns {string|null} Le sélecteur du bouton suivant ou null.
+     * Retrieves the pre-saved 'Next' button selector for this host.
+     * @returns {string|null} The next button selector or null.
      */
     function getNextPageSelectorFromStorage() {
         return localStorage.getItem("nextSelector:" + scrapingState.hostName);
     }
 
     /**
-     * Callback déclenché à la réception de la structure d'analyse initiale de la table.
-     * @param {Object} tableData - Données et sélecteurs de table transmis par l'onglet cible.
-     * @param {boolean} [isInitial=false] - Indique si c'est le chargement initial.
-     * @param {number} [configIndex] - Index de configuration de table pré-enregistrée à appliquer d'emblée.
+     * Callback triggered upon receiving the initial table analysis structure.
+     * @param {Object} tableData - Table data and selectors sent by the target tab.
+     * @param {boolean} [isInitial=false] - Indicates if it's the initial load.
+     * @param {number} [configIndex] - Index of a pre-saved table configuration to apply immediately.
      */
     function onTableDataReceived(tableData, isInitial, configIndex) {
         if (!tableData) {
@@ -778,7 +778,7 @@
             $("#resetColumns").show();
         }
 
-        // Calcul du nom de fichier d'export par défaut
+        // Calculate default export filename
         const domainKey = (() => {
             const url = currentTab.url;
             const hostnameParts = new URL(url).hostname.split(".");
@@ -810,7 +810,7 @@
                     }
 
                     if (scrapingState.pages || scrapingState.config.infinateScrollChecked) {
-                        // Rien
+                        // Nothing
                     } else {
                         $("#nextButton").show();
                     }
@@ -852,7 +852,7 @@
                         renderHandsontable();
                     });
 
-                    // Configuration des boutons de téléchargement / copie de données
+                    // Configuration of download / copy data buttons
                     $("#csv")
                         .off("click")
                         .click(function() {
@@ -930,7 +930,7 @@
     }
 
     /**
-     * Déclenche la recherche des tables dans la page active en envoyant un message au script de contenu.
+     * Triggers table search in the active page by sending a message to the content script.
      */
     function triggerFindTables() {
         chromeInstance.tabs.sendMessage(
@@ -946,15 +946,15 @@
     }
 
     /**
-     * Vérifie si le mode "Infinite scroll" est coché.
-     * @returns {boolean} True si le défilement infini est actif.
+     * Checks if the 'Infinite scroll' mode is checked.
+     * @returns {boolean} True if infinite scroll is active.
      */
     function isInfiniteScrollChecked() {
         return $("#infinateScroll").is(":checked");
     }
 
     /**
-     * Arrête le scraping en cours.
+     * Stops the current scraping process.
      */
     function stopScraping() {
         scrapingState.scraping = false;
@@ -965,7 +965,7 @@
     }
 
     /**
-     * Met à jour les valeurs d'information de scraping affichées dans le conteneur #stats.
+     * Updates the scraping information values displayed in the #stats container.
      */
     function updateUiStats() {
         $("#stats")
@@ -977,10 +977,10 @@
     }
 
     /**
-     * Demande à l'onglet actif de calculer un sélecteur de colonne optimal.
-     * @param {string} rowSelector - Sélecteur de la ligne de données.
-     * @param {string} path - Chemin de la cellule à analyser.
-     * @returns {Promise<string>} Promesse résolue avec le sélecteur CSS.
+     * Asks the active tab to calculate an optimal column selector.
+     * @param {string} rowSelector - Data row selector.
+     * @param {string} path - Path of the cell to analyze.
+     * @returns {Promise<string>} Promise resolved with the CSS selector.
      */
     async function requestSelectorFromTab(rowSelector, path) {
         const response = await chromeInstance.tabs.sendMessage(currentTab.id, {
@@ -992,11 +992,11 @@
         return response.selector;
     }
 
-    // --- Routine d'Initialisation Principale de l'Interface ---
+    // --- Main Interface Initialization Routine ---
     !async function initializePopup() {
         $("#stopScraping").click(stopScraping);
 
-        // Liaison de la gestion des délais de crawl
+        // Binding of crawl delay management
         $("#crawlDelay").bind("propertychange change click keyup input paste", function() {
             const value = $(this).val();
             if (isNaN(value) || value < 0 || parseInt(1000 * value) >= scrapingState.config.maxWait) {
@@ -1041,14 +1041,14 @@
             saveCurrentConfig();
         });
 
-        // Écouteur des changements locaux dans le stockage (synchronisation)
+        // Listener for local storage changes (synchronization)
         chromeInstance.storage.local.onChanged.addListener(changes => {
             if (changes[STORAGE_KEYS.TABLES]) {
                 loadConfigs().then(configs => updateConfigDropdown(configs));
             }
         });
 
-        // Écouteur des mises à jour d'URL dans l'onglet d'origine
+        // Listener for URL updates in the source tab
         chromeInstance.tabs.onUpdated.addListener((tabId, changeInfo) => {
             if (tabId === currentTab.id && changeInfo.url) {
                 currentTab.url = changeInfo.url;
@@ -1067,7 +1067,7 @@
             }
         });
 
-        // Timeout de sécurité si la page cible met trop de temps à répondre
+        // Safety timeout if the target page takes too long to respond
         setTimeout(function() {
             console.log("Pas de réponse reçue");
             if ($("#waitHeader").is(":visible")) {
@@ -1079,7 +1079,7 @@
             renderHandsontable();
         });
 
-        // Lancer la première recherche de tables
+        // Start the initial table search
         triggerFindTables();
     }();
 
@@ -1096,7 +1096,7 @@
         showStatusMessage('Mark "Next" button or link', "instructions");
         scrapingState.gettingNext = true;
 
-        // Fonction récursive de scrutation du statut du bouton "Suivant"
+        // Recursive polling function for 'Next' button status
         !function pollNextButtonStatus() {
             chromeInstance.tabs.sendMessage(
                 currentTab.id,
@@ -1135,7 +1135,7 @@
 
         let startTime = new Date();
 
-        // Lancement de la routine de crawl récursif
+        // Start the recursive crawl routine
         !function crawlNextPage() {
             const scrollDownPage = function(callback) {
                 chromeInstance.tabs.sendMessage(
@@ -1177,7 +1177,7 @@
                 clickNextPageButton = scrollDownPage;
             }
 
-            // Routine d'écoute et d'attente de chargement de la nouvelle page via requêtes réseau actives
+            // Routine to listen and wait for new page load via active network requests
             (function waitForPageToLoad(actionTrigger, onLoadComplete, tabId, maxWaitTime, pollInterval, crawlDelay, checkTabAlive) {
                 const activeRequests = {};
                 let lastRequestTime = null;
@@ -1221,7 +1221,7 @@
                 function triggerErrorCallback() {
                     setTimeout(function() {
                         if (new Date() - lastRequestTime < pollInterval || Object.keys(activeRequests).length) {
-                            // En attente
+                            // Waiting
                         } else {
                             checkCompletion();
                         }
@@ -1242,7 +1242,7 @@
             })(
                 clickNextPageButton,
                 function() {
-                    // Page chargée -> récupérer les nouvelles lignes de données de la table
+                    // Page loaded -> retrieve new table data rows
                     chromeInstance.tabs.sendMessage(
                         currentTab.id,
                         {
@@ -1270,7 +1270,7 @@
                                 scrapingState.workingTime += new Date() - startTime;
                                 startTime = new Date();
 
-                                // Ajout des lignes uniques collectées
+                                // Add collected unique rows
                                 (function(newRows) {
                                     scrapingState.data = scrapingState.data.concat(newRows);
                                     const uniqueRowsSet = new Set();

@@ -3,23 +3,23 @@
 
     const chromeInstance = chrome;
 
-    // Clés utilisées pour stocker les données dans l'extension
+    // Keys used to store data in the extension
     const STORAGE_KEYS = {
         TABLES: "tableConfigurations"
     };
 
     /**
-     * Helper asynchrone pour lire dans le stockage local de l'extension.
-     * @param {string[]} keys - Liste des clés à récupérer.
-     * @returns {Promise<Object>} Promesse contenant les valeurs associées.
+     * Asynchronous helper to read from the extension's local storage.
+     * @param {string[]} keys - List of keys to retrieve.
+     * @returns {Promise<Object>} Promise containing the associated values.
      */
     const getLocalStorage = async (keys) => chromeInstance.storage.local.get(keys);
 
     /**
-     * Filtre les configurations de table applicables à une URL spécifique en fonction de son scope (chemin d'accès).
-     * @param {Array} configs - Liste des configurations de table enregistrées.
-     * @param {string} url - URL de la page web actuelle.
-     * @returns {Array} Liste filtrée des configurations applicables.
+     * Filters table configurations applicable to a specific URL based on its scope (path).
+     * @param {Array} configs - List of saved table configurations.
+     * @param {string} url - URL of the current web page.
+     * @returns {Array} Filtered list of applicable configurations.
      */
     function filterConfigsByScope(configs, url) {
         if (!configs?.length) return configs ?? [];
@@ -32,10 +32,10 @@
     }
 
     /**
-     * Vérifie si l'URL correspond aux motifs de chemin définis dans le scope.
-     * @param {Object} scope - Objet définissant le scope avec un tableau pathPatterns.
-     * @param {string} url - URL complète à tester.
-     * @returns {boolean} True si l'URL correspond au scope.
+     * Checks if the URL matches the path patterns defined in the scope.
+     * @param {Object} scope - Scope object defining a pathPatterns array.
+     * @param {string} url - Full URL to test.
+     * @returns {boolean} True if the URL matches the scope.
      */
     function isUrlMatchingScope(scope, url) {
         if (!scope || !url) return true;
@@ -59,8 +59,8 @@
     }
 
     /**
-     * Configure les couleurs du badge de l'icône de l'extension pour un onglet donné.
-     * @param {number} tabId - ID de l'onglet cible.
+     * Configures the badge colors of the extension icon for a given tab.
+     * @param {number} tabId - ID of the target tab.
      */
     async function setupBadgeColors(tabId) {
         await chromeInstance.action.setBadgeBackgroundColor({
@@ -76,7 +76,7 @@
     }
 
     /**
-     * Récupère l'onglet actif et met à jour son badge.
+     * Retrieves the active tab and updates its badge.
      */
     async function updateActiveTabBadge() {
         try {
@@ -86,20 +86,20 @@
             if (!activeTab?.id) return;
             await updateBadgeForTab(activeTab.id);
         } catch (error) {
-            console.error("Erreur lors de la mise à jour du badge de l'onglet actif:", error);
+            console.error("Error updating the active tab badge:", error);
         }
     }
 
     /**
-     * Calcule le nombre de configurations applicables au site dans l'onglet et met à jour l'icône.
-     * @param {number} tabId - ID de l'onglet concerné.
-     * @param {Object} [cachedConfigs] - Configurations optionnelles pré-chargées pour éviter un appel de stockage.
+     * Calculates the number of applicable configurations for the site in the tab and updates the icon.
+     * @param {number} tabId - ID of the tab concerned.
+     * @param {Object} [cachedConfigs] - Optional pre-loaded configurations to avoid a storage call.
      */
     async function updateBadgeForTab(tabId, cachedConfigs) {
         const tab = await chromeInstance.tabs.get(tabId).catch(() => null);
         if (!tab?.id) return;
 
-        // Extraction du nom de domaine
+        // Extracting domain name
         const hostname = (() => {
             const url = tab.url;
             if (!url || url.startsWith("chrome://") || url.startsWith("chrome-extension://")) return null;
@@ -110,7 +110,7 @@
             }
         })();
 
-        // Si l'URL n'est pas scraping-compatible (ex: chrome://), vider le badge
+        // If the URL is not scraping-compatible (e.g. chrome://), clear the badge
         if (!hostname) {
             await chromeInstance.action.setBadgeText({
                 tabId: tab.id,
@@ -120,7 +120,7 @@
             return;
         }
 
-        // Récupération des configurations enregistrées dans le stockage local
+        // Retrieving saved configurations from local storage
         const configs = cachedConfigs ?? (await getLocalStorage([STORAGE_KEYS.TABLES]))[STORAGE_KEYS.TABLES];
         if (!configs) {
             await chromeInstance.action.setBadgeText({
@@ -131,11 +131,11 @@
             return;
         }
 
-        // Calcul du nombre de configurations de tables sauvegardées pour ce domaine
+        // Calculating the number of saved table configurations for this domain
         const domainConfig = configs[hostname]?.configs ?? [];
         const matchingConfigsCount = filterConfigsByScope(domainConfig, tab.url).length;
 
-        // Mise à jour du texte et de la couleur du badge
+        // Updating badge text and color
         await setupBadgeColors(tab.id);
         await chromeInstance.action.setBadgeText({
             tabId: tab.id,
@@ -144,8 +144,8 @@
     }
 
     /**
-     * Ouvre l'interface principale d'Open Scraper dans une fenêtre popup autonome pour l'onglet spécifié.
-     * @param {Object} tab - Objet tab de Chrome.
+     * Opens the main Open Scraper interface in a standalone popup window for the specified tab.
+     * @param {Object} tab - Chrome tab object.
      */
     function openPopupForTab(tab) {
         const searchParams = new URLSearchParams({
@@ -160,21 +160,21 @@
         });
     }
 
-    // --- Écouteurs d'Événements de l'Extension ---
+    // --- Extension Event Listeners ---
 
-    // Ouvrir l'outil de scraping au clic sur l'icône de l'extension
+    // Open scraping tool on extension icon click
     chromeInstance.action.onClicked.addListener(openPopupForTab);
 
-    // Mettre à jour le badge lors de l'activation/changement d'onglet
+    // Update badge on tab activation/change
     chromeInstance.tabs.onActivated.addListener(() => updateActiveTabBadge());
 
-    // Mettre à jour le badge quand la page web change ou finit de charger
+    // Update badge when web page changes or finishes loading
     chromeInstance.tabs.onUpdated.addListener((tabId, changeInfo) => {
         if (changeInfo.url || changeInfo.status === "complete") {
             updateBadgeForTab(tabId);
         }
     });
 
-    // Initialiser le badge pour l'onglet courant au démarrage du worker
+    // Initialize badge for the current tab on worker startup
     updateActiveTabBadge();
 })();
