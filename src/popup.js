@@ -257,7 +257,7 @@
         try {
             fn();
         } catch (error) {
-            console.error("Erreur capturée lors d'une exécution sécurisée:", error);
+            console.error("Error caught during safe execution:", error);
         }
     }
 
@@ -557,12 +557,12 @@
                         for (const subPath of path) {
                             let matchedSelector = "";
                             try {
-                                console.log("Recherche de sélecteur...");
+                                console.log("Looking for selector...");
                                 matchedSelector = await requestSelectorFromTab(joinedRules, subPath);
                             } catch (err) {
                                 console.error(err);
                             }
-                            console.log("Sélecteur trouvé : ", matchedSelector);
+                            console.log("Selector found:", matchedSelector);
                             generatedSelectors.push(matchedSelector);
 
                             const splitSubPath = subPath.split(" ");
@@ -856,7 +856,7 @@
                     $("#csv")
                         .off("click")
                         .click(function() {
-                            console.log("Téléchargement CSV...");
+                            console.log("Downloading CSV...");
                             safeExecute(analyzeAndSaveTableSelector);
 
                             const prepared = prepareDataForExport(scrapingState.data);
@@ -958,7 +958,7 @@
      */
     function stopScraping() {
         scrapingState.scraping = false;
-        console.log("Scraping arrêté.");
+        console.log("Scraping stopped.");
         $("#startScraping").show();
         $("#stopScraping").hide();
         showStatusMessage("Crawling stopped. Please download data or continue crawling.", "instructions");
@@ -988,7 +988,7 @@
             rowSelector: rowSelector,
             path: path
         });
-        if (!response) throw new Error("Impossible de choisir le sélecteur !");
+        if (!response) throw new Error("Unable to choose a selector!");
         return response.selector;
     }
 
@@ -1069,7 +1069,7 @@
 
         // Safety timeout if the target page takes too long to respond
         setTimeout(function() {
-            console.log("Pas de réponse reçue");
+            console.log("No response received from the target page.");
             if ($("#waitHeader").is(":visible")) {
                 handleUnsupportedSite();
             }
