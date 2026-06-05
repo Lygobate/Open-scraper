@@ -1,3 +1,5 @@
+<img width="1413" height="679" alt="Capture d&#39;écran 2026-06-02 225116" src="https://github.com/user-attachments/assets/f1b12541-8988-48a2-bb99-a5b8ee84ecd0" />
+
 # Open-Scraper
 
 A free, secure, and improved fork of the popular **"Instant Data Scraper"** extension.
