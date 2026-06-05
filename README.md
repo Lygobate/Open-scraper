@@ -1,4 +1,4 @@
-<img width="601" height="340" alt="Capture d&#39;écran 2026-06-02 225136" src="https://github.com/user-attachments/assets/c818dd8b-f4b6-487e-bc46-99305523e4c9" />
+<img width="351" height="340" alt="Capture d&#39;écran 2026-06-02 225136" src="https://github.com/user-attachments/assets/c818dd8b-f4b6-487e-bc46-99305523e4c9" />
 
 # Open-Scraper
 
